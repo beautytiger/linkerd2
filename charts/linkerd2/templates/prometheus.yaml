@@ -181,8 +181,10 @@ spec:
           name: prometheus-config
           readOnly: true
       - {{- include "partials.proxy" . | indent 8 | trimPrefix (repeat 7 " ") }}
+      {{ if not .NoInitContainer -}}
       initContainers:
       - {{- include "partials.proxy-init" . | indent 8 | trimPrefix (repeat 7 " ") }}
+      {{ end -}}
       serviceAccountName: linkerd-prometheus
       volumes:
       - emptyDir: {}
@@ -190,5 +192,5 @@ spec:
       - configMap:
           name: linkerd-prometheus-config
         name: prometheus-config
-      - {{- include "partials.proxy.volumes.identity" . | indent 8 | trimPrefix (repeat 7 " ") -}}
+      - {{- include "partials.proxy.volumes.identity" . | indent 8 | trimPrefix (repeat 7 " ") }}
 {{- end }}
